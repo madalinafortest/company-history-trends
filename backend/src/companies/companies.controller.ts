@@ -11,6 +11,11 @@ export class CompaniesController {
     return this.companiesService.findById(id);
   }
 
+  @Get(':id/data')
+  findCompanyData(@Param('id') id: string): Promise<Company> {
+    return this.companiesService.findCompanyData(id);
+  }
+
   @Get()
   findAll(): Promise<Company[]> {
     return this.companiesService.findAll();

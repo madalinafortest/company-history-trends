@@ -33,12 +33,27 @@ export class CompaniesService {
     return this.toDomainDTO(foundedCompany.data.dataset);
   }
 
+  async findCompanyData(companyId: string) {
+    const companyData = await firstValueFrom(
+      this.httpService.get(this.getCompanyDataURL(companyId), {
+        headers: {
+          Accept: 'application/json',
+        },
+      }),
+    );
+    return companyData.data.dataset_data.data;
+  }
+
   private getCompaniesURL(): string {
     return `${COMPANY_API_BASE_URL}?database_code=WIKI&api_key=${process.env.API_KEY}&order=asc`;
   }
 
   private getCompanyURL(companyId: string): string {
     return `${COMPANY_API_BASE_URL}${companyId}?api_key=${process.env.API_KEY}`;
+  }
+
+  private getCompanyDataURL(companyId: string): string {
+    return `${COMPANY_API_BASE_URL}${companyId}/data.json?api_key=${process.env.API_KEY}`;
   }
 
   private toDomainDTO(apiResponse): Company {
